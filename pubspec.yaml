@@ -1,0 +1,24 @@
+name: food_order_app
+description: A single-workflow food ordering Flutter app using BLoC architecture.
+publish_to: "none"
+version: 0.0.1
+environment:
+  sdk: ">=2.18.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.2
+  equatable: ^2.0.3
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^9.0.3
+  mocktail: ^0.3.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/screenshot.png
