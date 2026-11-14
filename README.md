@@ -1,34 +1,53 @@
-# Food Order App (Flutter) - Single Workflow
+# Food Order App (Flutter + BLoC)
 
-This repository contains a Flutter app demonstrating a single realistic food-ordering workflow (no auth) using **BLoC** architecture, SOLID principles, error handling, and unit tests.
+A Flutter app that walks through one complete food-ordering flow — browse restaurants, pick dishes, manage the cart, check out and get an order confirmation — built to show clean **BLoC** state management, SOLID structure and unit-tested business logic.
 
-## Features
-- Browse local restaurants (mocked)
-- View menu and add items to cart
-- Checkout with address & payment selection (mock)
-- Order confirmation and simulated tracking
-- Robust error handling
-- BLoC-based state management (flutter_bloc)
-- Unit tests for the main BLoC
+![Flutter](https://img.shields.io/badge/Flutter-3-02569B?logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-2.18+-0175C2?logo=dart&logoColor=white)
+![BLoC](https://img.shields.io/badge/state-flutter__bloc-6A1B9A)
 
-## Screenshot
-A placeholder screenshot is included at `assets/screenshot.png`. Replace it with your own screenshot.
+## The flow
 
-## How to run
-1. Ensure you have Flutter installed (2.10+ recommended).
-2. Clone or download the project.
-3. From the project root:
+```text
+Restaurants ──select──> Menu + cart ──checkout──> Address & payment ──place order──> Confirmation
+     ▲                                                                                   │
+     └──────────────────────────────── reset order ─────────────────────────────────────┘
+```
+
+- Nearby restaurants load from a repository (mocked with simulated network latency).
+- Add and remove items; quantities and the total update live.
+- Checkout with an address and a payment option (mocked).
+- Confirmation screen with simulated order tracking.
+- Loading and error states are handled throughout.
+
+## Architecture
+
+```text
+lib/
+├── main.dart                    # app setup, BlocProvider
+├── bloc/                        # OrderBloc, events, state
+├── models/                      # Restaurant, MenuItem, Order/OrderItem
+├── repository/
+│   ├── repository.dart          # Repository interface (dependency inversion)
+│   └── mock_repository.dart     # in-memory data with simulated latency
+├── screens/flow_screen.dart     # one screen that renders each step from state
+└── widgets/simple_error_widget.dart
+test/order_bloc_test.dart        # BLoC unit tests (bloc_test + mocktail)
+```
+
+`OrderBloc` handles `LoadRestaurants`, `SelectRestaurant`, `AddItem`, `RemoveItem`, `StartCheckout`, `PlaceOrder` and `ResetOrder` and emits immutable `OrderState` snapshots (Equatable). The UI depends only on the `Repository` interface, so the mock can be swapped for a real API client without touching the BLoC or the screens.
+
+## Run it
+
 ```bash
+git clone https://github.com/SumitDendage/food_order_app-project.git
+cd food_order_app-project
+flutter create .        # generates android/ios/web platform folders if missing
 flutter pub get
 flutter run
+flutter test            # BLoC unit tests
 ```
 
-## Running tests
-```bash
-flutter test
-```
+## Author
 
-## Notes
-- This is a local, offline demo. Replace `lib/repository/mock_repository.dart` with real APIs for production.
-- The project structure emphasizes clean architecture and SOLID principles.
-
+**Sumit Dendage** · [GitHub](https://github.com/SumitDendage) · [LinkedIn](https://www.linkedin.com/in/sumit-dendage-636a50201) · [Medium](https://dendagesumitbalkrishna123.medium.com)
